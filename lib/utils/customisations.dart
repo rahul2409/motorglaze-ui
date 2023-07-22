@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memberships_ui/screens/hidden_drawer.dart';
 
 TextStyle customTextStyle(
     {Color? color,
@@ -29,24 +28,5 @@ LinearGradient customBackgroundGradient({
     begin: begin ?? Alignment.topCenter,
     end: end ?? Alignment.bottomCenter,
     tileMode: tileMode ?? TileMode.clamp,
-  );
-}
-
-ListTile drawerListTile(session, title, context, routeName, icon) {
-  return ListTile(
-    leading: icon,
-    title: Text(
-      "$title",
-      style: customTextStyle(),
-    ),
-    onTap: () => {
-      Scaffold(
-        body: Stack(
-          children: [
-            HiddenDrawer(session),
-          ],
-        ),
-      )
-    },
   );
 }
