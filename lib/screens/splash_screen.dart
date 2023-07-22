@@ -3,6 +3,10 @@ import 'package:memberships_ui/models/drawer_model.dart';
 import 'package:memberships_ui/data/drawer_data.dart';
 import 'package:memberships_ui/screens/login_screen.dart';
 import 'package:memberships_ui/screens/membership_screen.dart';
+import 'package:memberships_ui/screens/payment_screen.dart';
+import 'package:memberships_ui/screens/profile.dart';
+import 'package:memberships_ui/screens/settings.dart';
+import 'package:memberships_ui/screens/store_screen.dart';
 import 'package:memberships_ui/widget/drawer_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -126,6 +130,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget getDrawerPage() {
     switch (item) {
+      case DrawerItems.transactions:
+        return PaymentScreen(openDrawer: openDrawer);
+      case DrawerItems.profile:
+        return ProfileScreen(openDrawer: openDrawer);
+      case DrawerItems.settings:
+        return SettingsScreen(openDrawer: openDrawer);
+      case DrawerItems.store:
+        return StoreScreen(openDrawer: openDrawer);
       case DrawerItems.membership:
       default:
         return MembershipScreen(

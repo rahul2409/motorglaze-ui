@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:memberships_ui/widget/drawer_menu_widget.dart';
 
-class MembershipScreen extends StatefulWidget {
+class StoreScreen extends StatefulWidget {
   final VoidCallback openDrawer;
-  const MembershipScreen({required this.openDrawer, super.key});
+  const StoreScreen({required this.openDrawer, super.key});
 
   @override
-  State<MembershipScreen> createState() => _MembershipScreenState();
+  State<StoreScreen> createState() => _StoreScreenState();
 }
 
-class _MembershipScreenState extends State<MembershipScreen> {
+class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     VoidCallback openDrawer = widget.openDrawer;
@@ -19,7 +19,7 @@ class _MembershipScreenState extends State<MembershipScreen> {
         leading: DrawerMenuWidget(onClick: openDrawer),
         backgroundColor: Colors.transparent,
         title: Text(
-          'Memberships',
+          'Store',
           style: TextStyle(
             color: Colors.white,
           ),
