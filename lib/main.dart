@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:memberships_ui/screens/admin/add_membership.dart';
+import 'package:memberships_ui/screens/admin/add_membership_registration.dart';
+import 'package:memberships_ui/screens/admin/add_service.dart';
+import 'package:memberships_ui/screens/admin/add_store.dart';
+import 'package:memberships_ui/screens/admin/add_transaction.dart';
+import 'package:memberships_ui/screens/admin/add_user.dart';
+import 'package:memberships_ui/screens/customer/homescreen.dart';
 import 'package:memberships_ui/screens/splashscreen.dart';
 
 void main() {
@@ -22,7 +29,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const HomeScreen(),
+        // Routes for admins
+        '/add_user': (context) => const AddUsers(),
+        '/add_transactions': (context) => const RecordTransaction(),
+        '/add_store': (context) => const AddStores(),
+        '/add_service': (context) => const AddServicesMembership(),
+        '/add_membership': (context) => const AddMembership(),
+        '/add_membership_registrations': (context) =>
+            const AddMembershipRegistrations(),
+        // Routes for customers
+      },
     );
   }
 }
