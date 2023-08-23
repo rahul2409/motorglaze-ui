@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:memberships_ui/data/repository/store_repository.dart';
 import 'package:memberships_ui/data/store_bloc_http.dart';
 import 'package:memberships_ui/events/store_bloc_event.dart';
 import 'package:memberships_ui/utils/customisations.dart';
@@ -41,63 +42,97 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
       body: BlocBuilder<StoreBloc, StoreState>(
         builder: (context, state) {
-          if (state.stores.isEmpty) {
-            return Center(child: Text('No stores available.'));
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ListView.builder(
-              itemCount: state.stores.length,
-              itemBuilder: (context, index) {
-                final store = state.stores[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
+          return FutureBuilder(
+            future: StoreRepository().fetchStoresFromApi(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                print('Waiting for api result');
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Center(
                   child: Container(
-                    padding: EdgeInsets.all(20),
-                    // Adjust the padding as needed
                     decoration: BoxDecoration(
-                      color: Colors
-                          .white, // Customize the container's background color
-                      borderRadius: BorderRadius.circular(
-                          12), // Adjust the border radius for rounded edges
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(
-                              0.2), // Customize shadow color and opacity
-                          spreadRadius:
-                              2, // Adjust the spread radius of the shadow
-                          blurRadius: 5, // Adjust the blur radius of the shadow
-                          offset: Offset(0, 3), // Adjust the shadow offset
-                        ),
-                      ],
+                      color: Colors.white,
                     ),
-                    child: ListTile(
-                      title: Text(store.storeName),
-                      onTap: () {
-                        // Navigate to store detail page
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => StoreDetailScreen(store)),
-                        // );
-                      },
-                      trailing: Container(
-                        width: 40,
-                        child: GestureDetector(
-                          child: Center(
-                              child: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          )),
-                          onTap: () {},
-                        ),
-                      ),
+                    child: Text(
+                      'Error ${snapshot.error}',
+                      style: customTextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
                     ),
                   ),
                 );
-              },
-            ),
+              } else if (snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ListView.builder(
+                    itemCount: state.stores.length,
+                    itemBuilder: (context, index) {
+                      final store = state.stores[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          // Adjust the padding as needed
+                          decoration: BoxDecoration(
+                            color: Colors
+                                .white, // Customize the container's background color
+                            borderRadius: BorderRadius.circular(
+                                12), // Adjust the border radius for rounded edges
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(
+                                    0.2), // Customize shadow color and opacity
+                                spreadRadius:
+                                    2, // Adjust the spread radius of the shadow
+                                blurRadius:
+                                    5, // Adjust the blur radius of the shadow
+                                offset:
+                                    Offset(0, 3), // Adjust the shadow offset
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Text(store.storeName),
+                            onTap: () {
+                              // Navigate to store detail page
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => StoreDetailScreen(store)),
+                              // );
+                            },
+                            trailing: Container(
+                              width: 40,
+                              child: GestureDetector(
+                                child: Center(
+                                    child: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                )),
+                                onTap: () {},
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return Center(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Text(
+                      'No stores found',
+                      style: customTextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                );
+              }
+            },
           );
         },
       ),
